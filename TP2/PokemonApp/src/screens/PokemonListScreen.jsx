@@ -8,27 +8,31 @@ import NoResultsMessage from '../components/NoResultsMessage.jsx';
 import SkeletonLoader from '../components/SkeletonLoader.jsx';
 import theme from '../styles/theme.jsx';
 
+const PAGE_SIZE = 10;
+const TOTAL_PAGES = 5;
+
 const PokemonListScreen = () => {
   const [pokemonData, setPokemonData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-  const [nextUrl, setNextUrl] = useState(null);
-  const [prevUrl, setPrevUrl] = useState(null);
-  const [currentUrl, setCurrentUrl] = useState('https://pokeapi.co/api/v2/pokemon?limit=50');
+  const [page, setPage] = useState(1);
   const [cache, setCache] = useState({});
 
-  const fetchPokemon = useCallback(async (url) => {
+  const buildUrl = (pageNumber) => {
+    const offset = (pageNumber - 1) * PAGE_SIZE;
+    return `https://pokeapi.co/api/v2/pokemon?limit=${PAGE_SIZE}&offset=${offset}`;
+  };
+
+  const fetchPokemon = useCallback(async (pageNumber) => {
     setError(null);
     setLoading(true);
+    const url = buildUrl(pageNumber);
     try {
       if (cache[url]) {
-        const { results, next, previous } = cache[url];
+        const { results } = cache[url];
         setPokemonData(results);
-        setNextUrl(next);
-        setPrevUrl(previous);
-        setCurrentUrl(url);
         setLoading(false);
         setRefreshing(false);
         return;
@@ -42,11 +46,8 @@ const PokemonListScreen = () => {
       
       setCache(prev => ({ ...prev, [url]: data }));
       setPokemonData(data.results);
-      setNextUrl(data.next);
-      setPrevUrl(data.previous);
-      setCurrentUrl(url);
     } catch (err) {
-      console.error('Error en fetch:', err); // Para debug
+      console.error('Error en fetch:', err);
       setError(`Error al cargar datos: ${err.message}. Tira hacia abajo o presiona Reintentar para probar de nuevo.`);
     } finally {
       setLoading(false);
@@ -55,16 +56,24 @@ const PokemonListScreen = () => {
   }, [cache]);
 
   useEffect(() => {
-    fetchPokemon(currentUrl);
-  }, []);
+    fetchPokemon(page);
+  }, [page, fetchPokemon]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchPokemon(currentUrl);
-  }, [currentUrl, fetchPokemon]);
+    fetchPokemon(page);
+  }, [page, fetchPokemon]);
 
   const handleRetry = () => {
-    fetchPokemon(currentUrl);
+    fetchPokemon(page);
+  };
+
+  const handlePrev = () => {
+    if (page > 1) setPage(page - 1);
+  };
+
+  const handleNext = () => {
+    if (page < TOTAL_PAGES) setPage(page + 1);
   };
 
   const filteredPokemon = useMemo(() => {
@@ -77,7 +86,7 @@ const PokemonListScreen = () => {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Pokédex</Text>
-        <SkeletonLoader count={10} /> {/* Muestra 10 placeholders */}
+        <SkeletonLoader count={10} />
         <ActivityIndicator 
           style={styles.spinnerOverlay} 
           size="large" 
@@ -114,11 +123,12 @@ const PokemonListScreen = () => {
         />
       )}
       <PaginationControls
-        prevUrl={prevUrl}
-        nextUrl={nextUrl}
-        onPrev={() => fetchPokemon(prevUrl)}
-        onNext={() => fetchPokemon(nextUrl)}
+        prevUrl={page > 1 ? true : null}
+        nextUrl={page < TOTAL_PAGES ? true : null}
+        onPrev={handlePrev}
+        onNext={handleNext}
       />
+      <Text style={{textAlign: 'center', marginTop: 8}}>Página {page} de {TOTAL_PAGES}</Text>
     </View>
   );
 };
@@ -153,7 +163,7 @@ const styles = StyleSheet.create({
     color: theme.colors.card,
     fontSize: 16,
     fontWeight: '500',
-  },
+ },
 });
 
 export default PokemonListScreen;
