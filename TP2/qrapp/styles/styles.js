@@ -1,0 +1,97 @@
+import { StyleSheet } from 'react-native';
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 30,
+    backgroundColor: '#F5F5F5',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  qrContainer: {
+    marginVertical: 30,
+    backgroundColor: '#FFFFFF',
+    padding: 20,
+    borderRadius: 20,
+    shadowColor: '#666666',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 8, // Para Android
+  },
+  scannerContainer: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'flex-end',
+    backgroundColor: '#000',
+  },
+  input: {
+    width: '100%',
+    borderWidth: 2,
+    borderColor: '#2ECC71',
+    borderRadius: 12,
+    padding: 15,
+    marginBottom: 20,
+    backgroundColor: '#FFFFFF',
+    fontSize: 16,
+    color: '#333333',
+    shadowColor: '#666666',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 4, // Para Android
+  },
+  scannedDataContainer: {
+    marginTop: 30,
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    shadowColor: '#666666',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5, // Para Android
+  },
+  scannedDataText: {
+    fontSize: 18,
+    color: '#333333',
+    fontWeight: 'bold',
+  },
+  componentContainer: {
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: 400,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 50,
+    left: 20,
+    right: 20,
+    backgroundColor: 'rgba(46, 204, 113, 0.9)', // Verde esmeralda semi-transparente
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    shadowColor: '#666666',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 6, // Para Android
+  },
+  scanMessage: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    marginTop: 10,
+    textAlign: 'center',
+    fontWeight: '500',
+  },
+  title: {
+    fontSize: 28,
+    color: '#27AE60',
+    fontWeight: 'bold',
+    marginBottom: 30,
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+});
