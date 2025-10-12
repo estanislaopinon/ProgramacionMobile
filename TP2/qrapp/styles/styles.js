@@ -68,7 +68,7 @@ export default StyleSheet.create({
     bottom: 50,
     left: 20,
     right: 20,
-    backgroundColor: 'rgba(46, 204, 113, 0.9)', // Verde esmeralda semi-transparente
+    backgroundColor: 'rgba(46, 204, 113, 0.9)',
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
@@ -93,5 +93,49 @@ export default StyleSheet.create({
     textAlign: 'center',
     textTransform: 'uppercase',
     letterSpacing: 1,
+  },
+  historyButton: {
+    backgroundColor: '#2ECC71',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 12,
+    marginTop: 20,
+    shadowColor: '#666666',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5, // Para Android
+  },
+  historyButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semi-transparente para el modal
+  },
+  modalContent: {
+    width: '90%',
+    maxHeight: '80%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    padding: 20,
+    shadowColor: '#666666',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 8, // Para Android
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+    padding: 10,
+  },
+  closeButtonText: {
+    color: '#2ECC71',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

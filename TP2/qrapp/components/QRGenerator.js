@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Button, Text } from 'react-native';
+import { View, TextInput, Button, Text, TouchableOpacity } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import styles from '../styles/styles';
 
@@ -24,6 +24,9 @@ export default function QRGenerator({ qrValue, setQrValue, setScanned }) {
         color="#2ECC71"
         onPress={() => setScanned(true)}
       />
+      <TouchableOpacity style={styles.historyButton} onPress={() => {}}>
+        <Text style={styles.historyButtonText}>Historial de Escaneos</Text>
+      </TouchableOpacity>
     </View>
   );
 }
