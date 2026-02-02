@@ -29,9 +29,10 @@ const MapScreen = ({ navigation, route }) => {
               latitude: conference.location.latitude,
               longitude: conference.location.longitude,
             }}
-            title={conference.title}
-            description={conference.location.address}
-          />
+            anchor={{ x: 0.5, y: 0.5 }}
+          >
+            <View style={styles.redDot} />
+          </Marker>
         ))}
         <Marker
           coordinate={{ latitude, longitude }}

@@ -103,4 +103,17 @@ export default StyleSheet.create({
     margin: 10,
     alignItems: 'center',
   },
+  redDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: '#ff3b30',
+    borderWidth: 2,
+    borderColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    elevation: 3,
+  },
 });
