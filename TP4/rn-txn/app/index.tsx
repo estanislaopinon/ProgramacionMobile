@@ -4,10 +4,10 @@ import { StyleSheet, Text, View, ScrollView, ActivityIndicator, Platform } from 
 export default function App() {
   const [events, setEvents] = useState<any[]>([]);
   const [status, setStatus] = useState('Esperando transacción...');
-  const txId = "TX-123"; // Debe ser igual al de simulate_txn.js
+  const txId = "TX-123"; 
 
   useEffect(() => {
-    // Si pruebas en el navegador usa localhost, si es móvil usa tu IP
+  
     const socketUrl = `ws://localhost:8080?transactionId=${txId}`;
     const ws = new WebSocket(socketUrl);
 
@@ -52,25 +52,81 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f4f7f6', paddingTop: 60, paddingHorizontal: 20 },
-  header: { fontSize: 26, fontWeight: 'bold', color: '#1a1a1a', textAlign: 'center' },
-  status: { textAlign: 'center', color: '#666', marginBottom: 30, fontSize: 14 },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#0f172a', // Fondo azul muy oscuro (Slate 900)
+    paddingTop: 60, 
+    paddingHorizontal: 20 
+  },
+  header: { 
+    fontSize: 28, 
+    fontWeight: '800', 
+    color: '#f8fafc', 
+    textAlign: 'center',
+    letterSpacing: 1,
+    marginBottom: 5
+  },
+  status: { 
+    textAlign: 'center', 
+    color: '#94a3b8', 
+    marginBottom: 30, 
+    fontSize: 13,
+    fontWeight: '500',
+    textTransform: 'uppercase'
+  },
   timeline: { flex: 1 },
-  emptyText: { textAlign: 'center', marginTop: 10, color: '#999' },
+  emptyContainer: {
+    marginTop: 100,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  emptyText: { 
+    textAlign: 'center', 
+    marginTop: 20, 
+    color: '#64748b',
+    fontSize: 16
+  },
   card: { 
-    backgroundColor: '#fff', 
+    backgroundColor: '#1e293b', // Fondo Slate 800
     padding: 20, 
-    borderRadius: 15, 
-    marginBottom: 15,
-    borderLeftWidth: 6,
-    borderLeftColor: '#3498db',
+    borderRadius: 20, 
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#334155',
+    // Efecto de sombra para Web
     ...Platform.select({
-      web: { boxShadow: '0 4px 6px rgba(0,0,0,0.05)' },
-      default: { elevation: 3 }
+      web: { boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3)' },
+      default: { elevation: 5 }
     })
   },
-  type: { fontSize: 18, fontWeight: 'bold', color: '#2c3e50' },
-  timestamp: { fontSize: 12, color: '#bdc3c7', marginBottom: 10 },
-  payloadBox: { backgroundColor: '#f8f9fa', padding: 10, borderRadius: 8 },
-  payloadText: { fontSize: 13, color: '#34495e', fontFamily: Platform.OS === 'web' ? 'monospace' : 'Courier' }
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12
+  },
+  type: { 
+    fontSize: 16, 
+    fontWeight: 'bold', 
+    color: '#38bdf8', // Azul brillante para el tipo
+    letterSpacing: 0.5
+  },
+  timestamp: { 
+    fontSize: 11, 
+    color: '#64748b', 
+    fontWeight: '600'
+  },
+  payloadBox: { 
+    backgroundColor: '#0f172a', 
+    padding: 12, 
+    borderRadius: 12,
+    borderLeftWidth: 3,
+    borderLeftColor: '#38bdf8' 
+  },
+  payloadText: { 
+    fontSize: 12, 
+    color: '#cbd5e1', 
+    lineHeight: 18,
+    fontFamily: Platform.OS === 'web' ? 'monospace' : 'Courier' 
+  }
 });

@@ -1,50 +1,71 @@
-# Welcome to your Expo app 👋
+# Sistema de Transacciones Bancarias en Tiempo Real (Saga Pattern) 💳
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este proyecto implementa un flujo de transacciones bancarias usando una arquitectura orientada a eventos (EDA). Emplea **Kafka** como bus de mensajes para coordinar microservicios desacoplados y **WebSockets** para actualizar en tiempo real una aplicación **React Native (Expo)**.
 
-## Get started
+**Arquitectura del sistema**
 
-1. Install dependencies
+El sistema está compuesto por 5 componentes principales:
 
-   ```bash
-   npm install
-   ```
+- **Infraestructura (Docker)**: Cluster de Kafka y Zookeeper para la persistencia y distribución de eventos.
+- **API de Entrada (`api.js`)**: Recibe peticiones POST de transacciones y publica comandos en el tópico `txn.commands`.
+- **Orquestador (`orchestrator.js`)**: Implementa la saga; escucha comandos, valida fondos y fraude, y emite eventos de éxito o reversa.
+- **Gateway WebSocket (`index.js`)**: Consume el tópico `txn.events` y envía actualizaciones a los clientes conectados.
+- **App Mobile (React Native)**: Interfaz que muestra el timeline de la transacción mediante una conexión persistente.
 
-2. Start the app
+## Cómo ejecutar el proyecto
 
-   ```bash
-   npx expo start
-   ```
+### Requisitos previos
 
-In the output, you'll find options to open the app in a
+- Docker y Docker Compose
+- Node.js (v16+)
+- Expo CLI / Expo Go (o un navegador para `expo start --web`)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Iniciar la infraestructura y servicios
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+En primer lugar, levanta la infraestructura con Docker Compose:
 
 ```bash
-npm run reset-project
+docker compose up -d
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Luego ejecuta los servicios del backend en terminales separadas:
 
-## Learn more
+```bash
+# Terminal 1: API
+node backend-gateway/api.js
 
-To learn more about developing your project with Expo, look at the following resources:
+# Terminal 2: Orquestador
+node backend-gateway/orchestrator.js
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+# Terminal 3: Gateway WebSocket
+node backend-gateway/index.js
 
-## Join the community
+# Iniciar la app (web)
+npx expo start --web
+```
 
-Join our community of developers creating universal apps.
+## Probar el flujo (Postman)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Para verificar que los eventos fluyen y se reflejan en la app:
+
+1. Asegúrate de que la App esté abierta y muestre el estado "Conectado".
+2. En Postman crea una petición POST a:
+
+```
+http://localhost:3000/transactions
+```
+
+3. Selecciona `raw` y formato `JSON` en el body. Ejemplo de cuerpo:
+
+```json
+{
+  "transactionId": "TX-123",
+  "fromAccount": "CTA-ESTANI-01",
+  "toAccount": "CTA-DESTINO-99",
+  "amount": 7500,
+  "currency": "ARS",
+  "userId": "USER-01"
+}
+```
+
+
